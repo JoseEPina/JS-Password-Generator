@@ -175,7 +175,7 @@ function generatePassword() {
 
     }
 }
-}
+
 
 
 //! Main Function: Write password to the #password input
