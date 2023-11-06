@@ -2,7 +2,7 @@
 //* Constant needed here to ensure that these are NOT changed
 const PWD_MIN_LENGTH = 8;
 const PWD_MAX_LENGTH = 128;
-const NUMBER_OF_CRITERIA = 4;
+var password = '';
 
 // Object array assignments needed here to store the each of
 // the password criteria needed for each selection.
@@ -11,16 +11,12 @@ const NUMBER_OF_CRITERIA = 4;
 //TODO  Criteria object:
 //TODO  name - Criteria Name
 //TODO  selected - was this criteria selected for password (yes/no)
-//TODO  totalChars - random # of total criteria characters TO BE used in password
-//TODO  assignedChars - current # of criteria characters used in password
 //TODO  setOfChars - defines set of the different characters to be used FOR THIS criteria
 
 var pwdData = [
     {
-        name: 'lowercase',
+        name: 'lowercase characters',
         selectedCriteria: false,
-        totalChars: 0,
-        assignedChars: 0,
         characterSet: [
             'a',
             'b',
@@ -51,10 +47,8 @@ var pwdData = [
         ],
     },
     {
-        name: 'uppercase',
+        name: 'uppercase characters',
         selectedCriteria: false,
-        totalChars: 0,
-        assignedChars: 0,
         characterSet: [
             'A',
             'B',
@@ -85,10 +79,8 @@ var pwdData = [
         ],
     },
     {
-        name: 'special-characters',
+        name: 'special characters',
         selectedCriteria: false,
-        totalChars: 0,
-        assignedChars: 0,
         characterSet: [
             '!',
             '(',
@@ -114,10 +106,9 @@ var pwdData = [
             '=',
         ],
     }, {
-        name: 'numeric',
+        name: 'numeric characters',
         selectedCriteria: false,
-        totalChars: 0,
-        assignedChars: 0, characterSet: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
+        characterSet: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
     },
 ];
 //* Prompts user for pwd length and validates it within range
@@ -148,21 +139,34 @@ function askCriteria() {
     //TODO Ask for the types of characters    
     getCharTypes();
     console.log(pwdData);
-    //TODO Then generate the password
-    //TODO Then Display the password
 }
 
+//TODO Then generate the password
+//* Generates password using length and selected criteria 
 function generatePassword() {
+    // Loops for total password length
     for (var i = 0; i < pwdLength; i++) {
-        // select criteria randomly 
-        // if (random criteriaSelection = true){ 
-        // create var for password
-        // 
+        // calculate charType (lower, upper, special, numeric) index.
+        var charTypeBucketIndex = Math.floor(Math.random() * pwdData.length); // Number of criteria = pwdData.length which is 4
+        // Loops until random charTypeBucketIndex is in list of the selected criteria.
+        while (pwdData[charTypeBucketIndex].selectedCriteria === false) {
+            charTypeBucketIndex = Math.floor(Math.random() * pwdData.length);
+            console.log('Bucket number:', charTypeBucketIndex);
+        }
+        console.log('**Selected Bucket:**', charTypeBucketIndex);
+        var selectedBucketCharIndex = Math.floor(Math.random() * (pwdData[charTypeBucketIndex].characterSet.length));
+        console.log('Selected Bucket: ' + charTypeBucketIndex);
+        console.log('Bucket Content: ' + pwdData[charTypeBucketIndex].characterSet);
+        console.log('Bucket Size: ' + pwdData[charTypeBucketIndex].characterSet.length);
+        console.log('Selected Bucket Char Index: ' + selectedBucketCharIndex);
+        console.log('Selected Character ' + pwdData[charTypeBucketIndex].characterSet[selectedBucketCharIndex]);
 
+        password += pwdData[charTypeBucketIndex].characterSet[selectedBucketCharIndex];
+        // console.log('password: ', password);
     }
+    // console.log('password: ', password);
+    return password;
 }
-
-
 
 //! Main Function: Write password to the #password input
 function writePassword() {
@@ -170,13 +174,10 @@ function writePassword() {
     askCriteria();
     var password = generatePassword();
     var passwordText = document.querySelector('#password');
-
     passwordText.value = password;
 }
-
 // Get references to the #generate element
 var generateBtn = document.querySelector('#generate');
-
 // Add event listener to generate button
 generateBtn.addEventListener('click', writePassword);
 
