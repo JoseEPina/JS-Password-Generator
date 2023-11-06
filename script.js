@@ -134,9 +134,9 @@ function getCharTypes() {
     }
 }
 
-// var criteriaSelection = [false, false, false, false];
+//* The for loop below is replacing the old code: var criteriaSelection = [false, false, false, false];
 for (var i = 0; i < pwdData.length; i++) {
-    pwdData.selectedCriteria = false;
+    pwdData[i].selectedCriteria = false;
 }
 var criteriaType = ['uppercase letters', 'lowercase letters', 'special characters', 'numeric characters'];
 var pwdLength = 0;
