@@ -2,17 +2,14 @@
 //* Constant needed here to ensure that these are NOT changed
 const PWD_MIN_LENGTH = 8;
 const PWD_MAX_LENGTH = 128;
-var password = '';
+var myPassword = ''; // Generated pwd.
+var pwdLength = 0; // User selected pwd length
 
-// Object array assignments needed here to store the each of
-// the password criteria needed for each selection.
-//! Variable needed here to create an Object Array assignment
-//! for the password Criteria
+// Array of Objects for each Criteria 
 //TODO  Criteria object:
-//TODO  name - Criteria Name
-//TODO  selected - was this criteria selected for password (yes/no)
-//TODO  setOfChars - defines set of the different characters to be used FOR THIS criteria
-
+//TODO  name - Criteria Name as prompt string
+//TODO  selectedCriteria - was this criteria selected for password (True for yes/False for no) 
+//TODO  characterSet - defines set of the different characters to be used
 var pwdData = [
     {
         name: 'lowercase characters',
@@ -111,70 +108,80 @@ var pwdData = [
         characterSet: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
     },
 ];
-//* Prompts user for pwd length and validates it within range
-function getLengthCriteria() {
+
+//* Prompts user for pwd length and validates it within range PWD_MIN_LENGTH to PWD_MAX_LENGTH
+function getPwdLength() {
+    pwdLength = 0; // Resets new pwd length.
     while (pwdLength > PWD_MAX_LENGTH || pwdLength < PWD_MIN_LENGTH) {
         pwdLength = prompt('Please enter password length. Length should be between 8 to 128 characters.');
     }
     return pwdLength;
 }
 
+//* Prompts for what criteria to use to generate the pwd.
 function getCharTypes() {
-    for (var i = 0; i < pwdData.length; i++) {
-        pwdData[i].selectedCriteria = confirm('Do you want to use ' + pwdData[i].name + ' to create a password?');
+    var chooseCriteria = false; //? Check at least ONE criteria Flag.
+    //* Loops until at least ONE criteria is selected. 
+    while (!chooseCriteria) { 
+        for (var i = 0; i < pwdData.length; i++) {
+            pwdData[i].selectedCriteria = confirm('Do you want to use ' + pwdData[i].name + ' to create a password?');
+            if (pwdData[i].selectedCriteria === true) {
+                chooseCriteria = true;
+            }
+        }
+        //* Sends error message.
+        if (!chooseCriteria) {
+            window.alert('You didn\'t select at least ONE criteria. Please select at least ONE criteria.')
+        }
     }
 }
 
 //* The for loop below is replacing the old code: var criteriaSelection = [false, false, false, false];
-for (var i = 0; i < pwdData.length; i++) {
-    pwdData[i].selectedCriteria = false;
-}
-var criteriaType = ['uppercase letters', 'lowercase letters', 'special characters', 'numeric characters'];
-var pwdLength = 0;
-// function needed to ask user for password criteria
+// for (var i = 0; i < pwdData.length; i++) {
+//     pwdData[i].selectedCriteria = false;
+// }
+//* Prompts users for desired pwd length & criteria.
 function askCriteria() {
-    //TODO Ask for the length
-    pwdLength = getLengthCriteria(); // Gets and validates the length criteria
-    console.log('My Value:', pwdLength);
-    //TODO Ask for the types of characters    
-    getCharTypes();
-    console.log(pwdData);
+    pwdLength = getPwdLength(); // Prompts for pwd length and validates the length criteria
+    // console.log('My Value:', pwdLength); 
+    getCharTypes(); // Prompts for criteria selection.
+    // console.log(pwdData);
 }
-
-//TODO Then generate the password
-//* Generates password using length and selected criteria 
+//? Generates pwd using length and selected criteria 
 function generatePassword() {
-    // Loops for total password length
+    myPassword = ''; // Re-initialize pwd string.
+    //? Loops for total password length
     for (var i = 0; i < pwdLength; i++) {
-        // calculate charType (lower, upper, special, numeric) index.
+        //? calculate charType (lower, upper, special, numeric) index.
         var charTypeBucketIndex = Math.floor(Math.random() * pwdData.length); // Number of criteria = pwdData.length which is 4
-        // Loops until random charTypeBucketIndex is in list of the selected criteria.
+        //? Loops until random charTypeBucketIndex is in list of the selected criteria.
         while (pwdData[charTypeBucketIndex].selectedCriteria === false) {
             charTypeBucketIndex = Math.floor(Math.random() * pwdData.length);
-            console.log('Bucket number:', charTypeBucketIndex);
+            // console.log('Bucket number:', charTypeBucketIndex);
         }
         console.log('**Selected Bucket:**', charTypeBucketIndex);
+        //? Randomly selects a character from a randomly selected criteria/character set.
         var selectedBucketCharIndex = Math.floor(Math.random() * (pwdData[charTypeBucketIndex].characterSet.length));
-        console.log('Selected Bucket: ' + charTypeBucketIndex);
-        console.log('Bucket Content: ' + pwdData[charTypeBucketIndex].characterSet);
-        console.log('Bucket Size: ' + pwdData[charTypeBucketIndex].characterSet.length);
-        console.log('Selected Bucket Char Index: ' + selectedBucketCharIndex);
-        console.log('Selected Character ' + pwdData[charTypeBucketIndex].characterSet[selectedBucketCharIndex]);
+        // console.log('Selected Bucket: ' + charTypeBucketIndex);
+        // console.log('Bucket Content: ' + pwdData[charTypeBucketIndex].characterSet);
+        // console.log('Bucket Size: ' + pwdData[charTypeBucketIndex].characterSet.length);
+        // console.log('Selected Bucket Char Index: ' + selectedBucketCharIndex);
+        // console.log('Selected Character ' + pwdData[charTypeBucketIndex].characterSet[selectedBucketCharIndex]);
 
-        password += pwdData[charTypeBucketIndex].characterSet[selectedBucketCharIndex];
+        //? Randomly selects a character from a randomly selected criteria/character set.
+        myPassword += pwdData[charTypeBucketIndex].characterSet[selectedBucketCharIndex];
         // console.log('password: ', password);
     }
-    // console.log('password: ', password);
-    return password;
+    // console.log('password: ', myPassword);
+    return myPassword;
 }
 
 //! Main Function: Write password to the #password input
 function writePassword() {
-    //TODO Ask for criteria
-    askCriteria();
-    var password = generatePassword();
-    var passwordText = document.querySelector('#password');
-    passwordText.value = password;
+    askCriteria(); //? Prompts users for desired pwd length & criteria.
+    var password = generatePassword(); //? Generates password applying user inputs.
+    var passwordText = document.querySelector('#password'); //? Selects element from page with id = #password
+    passwordText.value = password; //? Updates page with generated password.
 }
 // Get references to the #generate element
 var generateBtn = document.querySelector('#generate');
