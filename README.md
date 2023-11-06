@@ -32,7 +32,8 @@ interface and it is responsive, ensuring that it adapts to multiple screen sizes
 - THEN the password is either displayed in an alert or written to the page.
 ```
 
-The following image demonstrates the application functionality: ![pwd-generator-scrnshot]()
+The following image demonstrates the application functionality:
+![pwd-generator-scrnshot](https://raw.githubusercontent.com/JoseEPina/JS-Password-Generator/feature/generate-prompts/Assets/pwd_generator.JPG)
 
 ## Project URLs
 
