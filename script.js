@@ -4,11 +4,6 @@ const PWD_MIN_LENGTH = 8;
 const PWD_MAX_LENGTH = 128;
 const NUMBER_OF_CRITERIA = 4;
 
-var lowerCase = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
-var upperCase = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
-var numeric = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-var special = ['!', '(', ')', '-', '.', '?', '[', ']', '_', '`', '~', ';', ':', '@', '#', '$', '%', '^', '&', '*', '+', '=',];
-
 // Object array assignments needed here to store the each of
 // the password criteria needed for each selection.
 //! Variable needed here to create an Object Array assignment
@@ -20,13 +15,13 @@ var special = ['!', '(', ')', '-', '.', '?', '[', ']', '_', '`', '~', ';', ':', 
 //TODO  assignedChars - current # of criteria characters used in password
 //TODO  setOfChars - defines set of the different characters to be used FOR THIS criteria
 
-var criteria2 = [
+var pwdData = [
     {
         name: 'lowercase',
-        selected: false,
+        selectedCriteria: false,
         totalChars: 0,
         assignedChars: 0,
-        setOfChars: [
+        characterSet: [
             'a',
             'b',
             'c',
@@ -57,10 +52,10 @@ var criteria2 = [
     },
     {
         name: 'uppercase',
-        selected: false,
+        selectedCriteria: false,
         totalChars: 0,
         assignedChars: 0,
-        setOfChars: [
+        characterSet: [
             'A',
             'B',
             'C',
@@ -91,10 +86,10 @@ var criteria2 = [
     },
     {
         name: 'special-characters',
-        selected: false,
+        selectedCriteria: false,
         totalChars: 0,
         assignedChars: 0,
-        setOfChars: [
+        characterSet: [
             '!',
             '(',
             ')',
@@ -120,9 +115,9 @@ var criteria2 = [
         ],
     }, {
         name: 'numeric',
-        selected: false,
+        selectedCriteria: false,
         totalChars: 0,
-        assignedChars: 0, setOfChars: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
+        assignedChars: 0, characterSet: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
     },
 ];
 //* Prompts user for pwd length and validates it within range
@@ -133,45 +128,36 @@ function getLengthCriteria() {
     return pwdLength;
 }
 
-
 function getCharTypes() {
-    for (var i = 0; i < criteriaSelection.length; i++) {
-        criteriaSelection[i] = confirm('Do you want to use ' + criteriaType[i] + ' to create a password?');
+    for (var i = 0; i < pwdData.length; i++) {
+        pwdData[i].selectedCriteria = confirm('Do you want to use ' + pwdData[i].name + ' to create a password?');
     }
 }
 
-var criteriaSelection = [false, false, false, false]
-var criteriaType = ['uppercase letters', 'lowercase letters', 'special characters', 'numeric characters']
+// var criteriaSelection = [false, false, false, false];
+for (var i = 0; i < pwdData.length; i++) {
+    pwdData.selectedCriteria = false;
+}
+var criteriaType = ['uppercase letters', 'lowercase letters', 'special characters', 'numeric characters'];
 var pwdLength = 0;
 // function needed to ask user for password criteria
 function askCriteria() {
     //TODO Ask for the length
     pwdLength = getLengthCriteria(); // Gets and validates the length criteria
     console.log('My Value:', pwdLength);
-    //TODO Ask for the types of characters
-    n
+    //TODO Ask for the types of characters    
     getCharTypes();
-    console.log(criteriaType);
-    console.log(criteriaSelection);
-
+    console.log(pwdData);
     //TODO Then generate the password
     //TODO Then Display the password
-    // var specialPrompt = confirm('Would you like to include special characters in your password?');
-    // if (specialPrompt === true) {
-    //     console.log(specialPrompt);
-
-    // } else if (specialPrompt === false) {
-    //     console.log(specialPrompt);
-    // }
-
 }
-
 
 function generatePassword() {
     for (var i = 0; i < pwdLength; i++) {
         // select criteria randomly 
         // if (random criteriaSelection = true){ 
-        //
+        // create var for password
+        // 
 
     }
 }
